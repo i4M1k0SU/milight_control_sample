@@ -1,6 +1,6 @@
 # Milight Control Sample
 - **For V6 Bridge**
-- **For RGBWW**
+- **For RGBW**
 
 ## Setup
 1. `npm install`

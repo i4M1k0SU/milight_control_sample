@@ -1,0 +1,20 @@
+{
+  "name": "milight_control_sample",
+  "version": "1.0.0",
+  "description": "Milight Control Sample",
+  "main": "app.js",
+  "scripts": {
+    "start": "babel-node app.js --exec babel-node",
+    "discover": "babel-node discover.js --exec babel-node"
+  },
+  "author": "i4M1k0SU",
+  "license": "MIT",
+  "dependencies": {
+    "node-milight-promise": "^0.2.32"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.0.1",
+    "babel-preset-env": "^1.6.1"
+  }
+}

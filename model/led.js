@@ -13,7 +13,20 @@
 import {MilightController as Milight, commandsV6 as commands} from 'node-milight-promise';
 import config from '../config.json';
 
-const DEFAULT_BRIGHTNESS = 100;
+export const MAX_BRIGHTNESS = 100;
+export const PRESET_WHITE_PULSE = 0x01;
+export const PRESET_COLOR_PULSE = 0x02;
+export const PRESET_COLOR_STROBO = 0x03;
+export const PRESET_COLOR_STROBO_DARK = 0x04;
+export const PRESET_RED_ALERT = 0x05;
+export const PRESET_GREEN_ALERT = 0x06;
+export const PRESET_BLUE_ALERT = 0x07;
+export const PRESET_ALL = 0x08;
+export const PRESET_COLOR_GRADATION = 0x09;
+export const COLOR_RED = [0xFF, 0x00, 0x00];
+export const COLOR_GREEN = [0x00, 0xFF, 0x00];
+export const COLOR_BLUE = [0x00, 0x00, 0xFF];
+export const COLOR_PINK = [0xFE, 0x2E, 0xF7];
 
 export default class LedModel {
 
@@ -24,37 +37,65 @@ export default class LedModel {
         });
         this.zone = zone;
     }
-    
+
     on() {
-        this.commands.rgbw.on(this.zone);
+        this.light.sendCommands(commands.rgbw.on(this.zone));
     }
 
     off() {
         this.light.sendCommands(commands.rgbw.off(this.zone));
     }
-    
+
+    link() {
+        this.light.sendCommands(commands.rgbw.link(this.zone));
+    }
+
+    unlink() {
+        this.light.sendCommands(commands.rgbw.unlink(this.zone));
+    }
+
     pause(time) {
         this.light.pause(time);
     }
-    
-    chengeBrightness(brightness) {
+
+    setBrightness(brightness) {
         this.light.sendCommands(commands.rgbw.brightness(this.zone, brightness));
     }
-    
-    changeHue(hue) {
+
+    setHue(hue) {
         this.light.sendCommands(commands.rgbw.hue(this.zone, hue));
     }
 
+    setColor(r, g, b) {
+        this.light.sendCommands(commands.rgbw.rgb(this.zone, r, g, b));
+    }
+
+    setPreset(preset) {
+        this.light.sendCommands(commands.rgbw.effectMode(this.zone, preset))
+    }
+
+    speedUp() {
+        this.light.sendCommands(commands.rgbw.effectSpeedUp(this.zone));
+    }
+
+    speedDown() {
+        this.light.sendCommands(commands.rgbw.effectSpeedDown(this.zone));
+    }
+
     white() {
-        this.light.sendCommands(commands.rgbw.on(this.zone), commands.rgbw.whiteMode(this.zone), commands.rgbw.brightness(this.zone, DEFAULT_BRIGHTNESS));
+        this.light.sendCommands(commands.rgbw.whiteMode(this.zone));
     }
-    
+
+    night() {
+        this.light.sendCommands(commands.rgbw.nightMode(this.zone));
+    }
+
     pink() {
-        this.light.sendCommands(commands.rgbw.on(this.zone), commands.rgbw.rgb(this.zone, 0xFE, 0x2E, 0xF7), commands.rgbw.brightness(this.zone, DEFAULT_BRIGHTNESS));
+        this.light.sendCommands(commands.rgbw.rgb(this.zone, COLOR_PINK[0], COLOR_PINK[1], COLOR_PINK[2]));
     }
-    
+
     close() {
-    	this.light.close().then(() => {
+        this.light.close().then(() => {
             console.log("All command have been executed - closing Milight");
         });
     }

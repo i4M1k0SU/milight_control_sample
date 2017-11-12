@@ -81,6 +81,27 @@ export default class LedModel {
     speedDown() {
         this.light.sendCommands(commands.rgbw.effectSpeedDown(this.zone));
     }
+    
+    rhythmStrobo() {
+        this.off();
+        this.pause(200);
+
+        for (let x = 0; x < 2; x++) {
+            this.on();
+            this.pause(200);
+            this.off();
+            this.pause(200);
+        }
+
+        for (let x = 0; x < 2; x++) {
+            this.on();
+            this.pause(20);
+            this.off();
+            this.pause(20);
+        }
+
+        this.on();
+    }
 
     white() {
         this.light.sendCommands(commands.rgbw.whiteMode(this.zone));

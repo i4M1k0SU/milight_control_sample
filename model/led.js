@@ -55,7 +55,7 @@ export default class LedModel {
     }
 
     pause(time) {
-        this.light.pause(time);
+        if (time > 0) this.light.pause(time);
     }
 
     setBrightness(brightness) {
